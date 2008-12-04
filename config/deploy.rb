@@ -13,7 +13,7 @@ set :use_sudo, false
 set :scm, :git
 set :branch, "master"
 set :repository, "git://github.com/molpe/tog_demo.git"
-set :deploy_via, :remote_cache
+#set :deploy_via, :remote_cache
 
 set :deploy_to, "/home/tog/apps/demo"
 
