@@ -14,6 +14,7 @@ set :scm, :git
 set :branch, "master"
 set :repository, "git://github.com/molpe/tog_demo.git"
 #set :deploy_via, :remote_cache
+set :git_enable_submodules, 1
 
 set :deploy_to, "/home/tog/apps/demo"
 
