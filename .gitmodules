@@ -1,0 +1,12 @@
+[submodule "vendor/plugins/tog_core"]
+	path = vendor/plugins/tog_core
+	url = git://github.com/tog/tog_core.git
+[submodule "vendor/plugins/tog_user"]
+	path = vendor/plugins/tog_user
+	url = git://github.com/tog/tog_user.git
+[submodule "vendor/plugins/tog_social"]
+	path = vendor/plugins/tog_social
+	url = git://github.com/tog/tog_social.git
+[submodule "vendor/plugins/tog_mail"]
+	path = vendor/plugins/tog_mail
+	url = git://github.com/tog/tog_mail.git
