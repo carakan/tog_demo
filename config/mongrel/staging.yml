@@ -1,0 +1,10 @@
+--- 
+user: tog
+cwd: /home/tog/apps/demo/current
+log_file: /home/tog/apps/demo/shared/log/mongrel.log
+port: "3012"
+environment: staging
+group: tog
+address: 127.0.0.1
+pid_file: /home/tog/apps/demo/shared/pids/mongrel.pid
+servers: 1
