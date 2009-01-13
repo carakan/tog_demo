@@ -10,3 +10,6 @@
 [submodule "vendor/plugins/tog_mail"]
 	path = vendor/plugins/tog_mail
 	url = git://github.com/tog/tog_mail.git
+[submodule "vendor/plugins/tog_conversatio"]
+	path = vendor/plugins/tog_conversatio
+	url = git://github.com/tog/tog_conversatio.git
