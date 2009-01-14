@@ -13,3 +13,6 @@
 [submodule "vendor/plugins/tog_conversatio"]
 	path = vendor/plugins/tog_conversatio
 	url = git://github.com/tog/tog_conversatio.git
+[submodule "vendor/plugins/tog-wiki"]
+	path = vendor/plugins/tog-wiki
+	url = git://github.com/molpe/tog-wiki
