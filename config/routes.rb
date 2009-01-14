@@ -9,6 +9,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.routes_from_plugin 'tog_conversatio'
 
+  map.routes_from_plugin 'tog-wiki'
+
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:
@@ -30,7 +32,7 @@ ActionController::Routing::Routes.draw do |map|
   
   # Sample resource route with more complex sub-resources
   #   map.resources :products do |products|
-  #     products.resources :comments
+  #     products.resources :comment:s
   #     products.resources :sales, :collection => { :recent => :get }
   #   end
 

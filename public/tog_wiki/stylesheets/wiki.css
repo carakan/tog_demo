@@ -1,0 +1,39 @@
+.col_60_40{
+  font-size:1.2em;
+}
+
+a.wiki-word{
+  color:#339933;
+}
+a.wiki-word:hover {
+  color:#DD4171;
+}
+#wiki_sidebar{
+  padding-left : 20px;
+  padding-bottom : 20px;
+}
+#wiki_sidebar div{
+  background : #B2C7DF;
+  margin : 5px;
+  padding : 3px;
+}
+#wiki_sidebar div a{
+  padding-left : 10px;
+  color : black;
+}
+#wiki_sidebar div a:hover{
+  color : #DD4171;
+}
+#formatting_tips caption{
+  background : #B2C7DF;
+  color : black;
+  text-align : center;
+}
+#wiki_submit{
+  margin-top : 20px;
+}
+
+#wiki_version_block{
+  margin-top : 20px;
+  color : #777777;
+}
