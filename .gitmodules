@@ -19,3 +19,6 @@
 [submodule "vendor/plugins/tog_forum"]
 	path = vendor/plugins/tog_forum
 	url = git://github.com/molpe/tog_forum.git
+[submodule "vendor/plugins/white_list_model"]
+        path = vendor/plugins/white_list_model
+        url = git://github.com/molpe/tog_forum.git
