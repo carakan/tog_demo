@@ -9,6 +9,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.routes_from_plugin 'tog_conversatio'
 
+  map.routes_from_plugin 'tog_forum'
+
   map.routes_from_plugin 'tog-wiki'
 
   # The priority is based upon order of creation: first created -> highest priority.

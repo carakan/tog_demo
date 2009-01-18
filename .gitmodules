@@ -16,3 +16,6 @@
 [submodule "vendor/plugins/tog-wiki"]
 	path = vendor/plugins/tog-wiki
 	url = git://github.com/molpe/tog-wiki
+[submodule "vendor/plugins/tog_forum"]
+	path = vendor/plugins/tog_forum
+	url = git://github.com/molpe/tog_forum.git
