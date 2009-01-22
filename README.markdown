@@ -17,4 +17,9 @@ Installation
 * Start your server with 'ruby script/server'
 * Point your browser to http://localhost:3000
 
+Post-installation
+=================
+
+* Admin user: the first registered admin user get administration privileges. You can access the administration console in http://localhost:3000/admin
+
 Copyright (c) 2008-2009 Linking Paths, released under the MIT license
