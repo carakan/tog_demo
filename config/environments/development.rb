@@ -15,3 +15,15 @@ config.action_controller.perform_caching             = false
 
 # Don't care if the mailer can't send
 config.action_mailer.raise_delivery_errors = false
+
+class << I18n
+  alias old_l l
+  def l(*args)
+    "[%s]" % I18n.old_l(*args)
+  end
+  
+  alias old_t t
+  def t(*args)
+   "[%s]" % I18n.old_t(*args)
+  end
+end
