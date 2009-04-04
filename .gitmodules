@@ -22,3 +22,6 @@
 [submodule "vendor/plugins/white_list_model"]
         path = vendor/plugins/white_list_model
         url = git://github.com/imanel/white_list_model.git
+[submodule "vendor/plugins/acts_as_scribe"]
+	path = vendor/plugins/acts_as_scribe
+	url = git://github.com/linkingpaths/acts_as_scribe.git
