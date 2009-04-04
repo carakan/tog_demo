@@ -1,6 +1,3 @@
-[submodule "vendor/plugins/tog_core"]
-	path = vendor/plugins/tog_core
-	url = git://github.com/tog/tog_core.git
 [submodule "vendor/plugins/tog_user"]
 	path = vendor/plugins/tog_user
 	url = git://github.com/tog/tog_user.git
@@ -25,3 +22,6 @@
 [submodule "vendor/plugins/acts_as_scribe"]
 	path = vendor/plugins/acts_as_scribe
 	url = git://github.com/linkingpaths/acts_as_scribe.git
+[submodule "vendor/plugins/tog_core"]
+	path = vendor/plugins/tog_core
+	url = git://github.com/tog/tog_core.git
