@@ -4,3 +4,7 @@ db/*.sqlite3
 *.tmproj
 public/system
 db/schema.rb
+Capfile
+config/deploy/*
+config/deploy.rb
+config/mongrel
