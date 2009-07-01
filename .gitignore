@@ -7,4 +7,3 @@ db/schema.rb
 Capfile
 config/deploy/*
 config/deploy.rb
-config/mongrel

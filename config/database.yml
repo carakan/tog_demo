@@ -22,9 +22,9 @@ staging:
   password: tog.pass
   host: localhost
 
-
 production:
-  adapter: sqlite3
-  database: db/production.sqlite3
-  pool: 5
-  timeout: 5000
+  adapter: mysql
+  database: tog_production
+  username: tog
+  password: tog.pass
+  host: localhost
