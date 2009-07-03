@@ -145,6 +145,39 @@ class User < ActiveRecord::Base
   def self.site_search(query, search_options={})
     active.find :all, :conditions => ["login like :query", { :query => "%#{query}%" }]
   end
+
+  # Scoped users that gave a given state
+  def self.state(state) 
+    return scoped({}) unless state
+    scoped(:conditions => {:state => state.to_s})
+  end
+
+  # Scope users that have a given text in login or email attributes
+  #  
+  def self.search(text = nil, fields = [:login, :email])
+    return scoped({}) if text.blank? || fields.empty?    
+    where = fields.map { |field| "#{field} LIKE ?" }.join(" OR ")
+    conditions = [where] + ["%#{text}%"] * fields.size
+    scoped(:conditions => conditions)
+  end
+  
+  # Scope users that are below a given age 
+  # 
+  # Symbolic ages currently supported: today, week, month
+  #
+  def self.aged(age, now = nil)
+    return scoped({}) unless age
+    now ||= Time.now
+    today = now.midnight
+    time = {
+      :today => today,
+      :week => today - 7.days,
+      :month => today - 1.month,
+    }[age.to_sym]
+    scope = time ? {:conditions => 
+      ["users.created_at >= ? AND users.created_at <= ?", time, now]} : {}
+    scoped(scope)
+  end
   
   protected
   # before filter
