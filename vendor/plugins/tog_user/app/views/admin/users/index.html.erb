@@ -27,9 +27,9 @@
     <% @users.each do |user| %>
     <tr<%= cycle(' class="pair"','') -%>>
       <td><strong><%= link_to user.login, edit_admin_user_url(user), {:title => I18n.t("tog_user.admin.edit_user")} -%></strong></td>
-      <td><%= mail_to user.email, user.email, {:title => I18n.t("tog_user.admin.send_email")} -%></td>
+      <td nowrap="nowrap"><%= mail_to user.email, user.email, {:title => I18n.t("tog_user.admin.send_email")} -%></td>
       <td><%= I18n.t("tog_user.model.states.#{user.current_state}") %></td>
-      <td><%= I18n.l(user.created_at, :format => :short) -%></td>
+      <td nowrap="nowrap"><%= I18n.l(user.created_at, :format => :long) -%></td>
     </tr>
     <% end %>
   </tbody>
@@ -44,9 +44,8 @@
     </h2>
     <div class="portlet_content">
       <% form_tag(admin_users_path, :method => :get) do %>
-        <%= params_hidden_fields(params, [:commit, :text]) %>
-        <%= text_field_tag :text, params[:text], :size => 25 %>
-        <%= submit_tag I18n.t("tog_user.admin.search") %>
+        <%= text_field_tag :search_term, params[:search_term], :size => 22 %>
+        <%= submit_tag " > " %>
       <% end %>      
       <small>
         <%= I18n.t("tog_user.admin.search_user_info") %>
@@ -65,25 +64,22 @@
       <ul>
         <li>
           <ul>
-            <%= filter_item(nil, nil, [:age, :state], 
-                  I18n.t("tog_user.admin.filter_all")) %>
+            <li><%= link_to I18n.t("tog_user.admin.filter_all"), admin_users_path(:search_term => params[:search_term])%></li>
           </ul>
         </li>
         <li>
           <%= I18n.t("tog_user.admin.age_filter") %>
           <ul>
             <% [:today, :week, :month].each do |age| %>
-              <%= filter_item(:age, age, [:state], 
-                    I18n.t("tog_user.admin.age_filter_fields.#{age}")) %> 
+              <%= filter_item(:age, age, I18n.t("tog_user.admin.age_filter_fields.#{age}")) %> 
             <% end %>
           </ul>
         </li>
         <li>
           <%= I18n.t("tog_user.admin.user_state_filter") %>
           <ul>
-            <% [:active, :pending, :suspended].each do |state| %>
-              <%= filter_item(:state, state, [:age], 
-                    I18n.t("tog_user.admin.user_state_filter_fields.#{state}")) %>
+            <% [:passive, :pending, :active, :suspended, :deleted].each do |state| %>
+              <%= filter_item(:state, state, I18n.t("tog_user.admin.user_state_filter_fields.#{state}")) %>
             <% end %>
           </ul>        
         </li>

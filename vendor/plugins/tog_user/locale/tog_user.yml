@@ -84,7 +84,7 @@ en:
       search_user_info: Search in name and email
       search: Search
       filter_users: Filter users
-      filter_all: All
+      filter_all: Remove filters
       age_filter: Creation date
       age_filter_fields:
         today: Today
@@ -95,6 +95,8 @@ en:
         active: Active
         pending: Pending
         suspended: Suspended
+        deleted: Deleted
+        passive: Passive
     member:
       password:
         changed: Password changed

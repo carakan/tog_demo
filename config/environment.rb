@@ -11,7 +11,7 @@ require 'desert'
 Rails::Initializer.run do |config|
   config.gem 'thoughtbot-factory_girl', :lib => 'factory_girl'
   config.gem 'mocha'
-  config.gem 'tog-tog', :lib => 'tog', :version => '0.5'
+  config.gem 'tog-tog', :lib => 'tog', :version => '~> 0.5'
   config.gem 'mislav-will_paginate', :lib => 'will_paginate', :source => 'http://gems.github.com', :version => '~> 2.3.6'
   config.gem 'desert', :lib => 'desert', :version => '0.5'
   # Settings in config/environments/* take precedence over those specified here.

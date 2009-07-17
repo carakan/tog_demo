@@ -1,6 +1,9 @@
 Edge
 ----
 
+* Filter users by creation date or state in admin (kudos to tokland)
+* Search users in admin (kudos to tokland)
+
 0.5.2
 ----
 
