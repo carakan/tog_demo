@@ -1,6 +1,17 @@
 Edge
 ----
 
+* Replaced own sharing code by acts_as_shareable plugin. Please, install acts_as_shareable and it's migration before running plugins migrations.
+* Acts_as_state_machine code replaced by AASM gem
+* Better messages for bidirectional friendships
+* Added translations for Brazilian Portuguese
+* Fixed: searching only active profiles
+* Fixed: a profile can also be found by login
+* Fixed: add rss template for groups (closes ticket #2)
+
+0.5.4
+----
+
 * Clean-up of sharings (thanks to Andrei Erdoss)
      IMPORTANT: the most important change is that to methods in Member::SharingController has been renamed, from
                 index+share+remove to the more standard new+create+destroy and routes names has been updated. 

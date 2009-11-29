@@ -1,10 +1,33 @@
 Edge
 ----
 
+* Added acts_as_shareable to installation template, used by tog_social
+* EDGE version installation installs EDGE versions of tog's core plugins
+* Added config.reload_plugins entry to development environment
+* acts_as_commentable is now installed as gem
+* Flash setted after abuse report (kudos to Andrei Erdoss)
+* Caching Tog::Config values
+* Installation template now asks about installing gems as sudo
+* new generator for creating plugin's migrations, on installation and after updates
+* using acts_as_rateable and acts_as_shareable as plugins, which fixes problem with timestamps while installing
+* using acts_as_taggable_on instead of acts_as_taggable_on_steroids_
+* comments can be posted to twitter (kudos to boonious)
+* for comments notification, commentable must respond to user or owner (till now must respond to owner)
+* New language selector using dropdown list
+* Added translations for Brazilian Portuguese
+
+0.5.4
+----
+
+* Fixed redirection after abuse confirmation (kudos to Arnau Sanchez)
+
+0.5.3
+----
+
 0.5.2
 ----
 
-* Fixed #4. Misspelled name for I18nHelper. Thanks to Richard Shank andJavier Lafora 
+* Fixed #4. Misspelled name for I18nHelper. Thanks to Richard Shank and Javier Lafora 
 * Added some missed keys in spanish locale
 
 0.5.1

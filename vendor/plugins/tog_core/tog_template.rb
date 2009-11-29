@@ -1,4 +1,8 @@
-TOG_RELEASE = "v0.5.1"
+EDGE = "EDGE"
+TOG_RELEASE = EDGE
+#TOG_RELEASE = "v0.5.4"
+
+APP_NAME = @root.split('/').last
 
 module Colored
   extend self
@@ -62,18 +66,31 @@ end
 def install_require_gems
   run "gem sources -a http://gems.github.com"
   
-  gem 'desert', :version => '0.5', :lib => 'desert'
-  gem 'mislav-will_paginate', :version => '~> 2.3.6', :lib => 'will_paginate', :source => 'http://gems.github.com'
-  gem 'tog-tog', :version => '0.5', :lib => 'tog'
-  gem 'mocha'
+  gem 'desert', :lib => 'desert', :version => '>= 0.5.2'
+  gem 'mislav-will_paginate', :lib => 'will_paginate', :version => '~> 2.3.6'
+  gem 'tog-tog', :lib => 'tog', :version => '>= 0.5'
   gem 'thoughtbot-factory_girl', :lib => 'factory_girl'
-  rake "gems:install", :sudo => true
+  gem 'jackdempsey-acts_as_commentable', :lib => 'acts_as_commentable', :version => '2.0.1'
+  gem "mreinsch-acts_as_rateable", :lib => "acts_as_rateable", :version => '2.0.1'
+  gem 'RedCloth', :lib => 'redcloth', :version => '>= 4.2.0'
+  gem "mbleigh-acts-as-taggable-on", :lib => "acts-as-taggable-on", :version => '1.0.5'
+  gem "linkingpaths-acts_as_abusable", :lib => "acts_as_abusable", :version => '0.0.2'
+  gem 'rubyist-aasm', :version => '~> 2.1.1', :lib => 'aasm'
+  gem 'oauth', :version => '>= 0.3.5'
+  
+  puts "\n"
+  if yes?("Install required gems as root? (y/n). If you are using Windows, please, answer 'n'. If installing gems as superuser you could be asked to enter your password.") 
+    rake "gems:install", :sudo => true
+  else
+    rake "gems:install", :sudo => false
+  end  
+  
 end
 
 def install_tog_core_plugins    
-  quiet_git_install('tog_core', "git://github.com/tog/tog_core.git", TOG_RELEASE)
-  quiet_git_install('tog_social', "git://github.com/tog/tog_social.git", TOG_RELEASE)
-  quiet_git_install('tog_mail', "git://github.com/tog/tog_mail.git", TOG_RELEASE)
+  quiet_git_install('tog_core', "git://github.com/tog/tog_core.git", TOG_RELEASE )
+  quiet_git_install('tog_social', "git://github.com/tog/tog_social.git", TOG_RELEASE )
+  quiet_git_install('tog_mail', "git://github.com/tog/tog_mail.git", TOG_RELEASE )
 
   route "map.routes_from_plugin 'tog_core'"
   puts "* adding tog_core routes to host app... #{"added".green.bold}";
@@ -81,69 +98,25 @@ def install_tog_core_plugins
   puts "* adding tog_tog_social routes to host app... #{"added".green.bold}";
   route "map.routes_from_plugin 'tog_mail'"
   puts "* adding tog_mail routes to host app... #{"added".green.bold}";
-
-  file "db/migrate/" + Time.now.strftime("%Y%m%d%H%M%S") + "_install_tog.rb",
-  %q{class InstallTog < ActiveRecord::Migration
-      def self.up
-        migrate_plugin "tog_core", 6
-        migrate_plugin "tog_social", 5
-        migrate_plugin "tog_mail", 2
-      end
-
-      def self.down
-        migrate_plugin "tog_mail", 0 
-        migrate_plugin "tog_social", 0 
-        migrate_plugin "tog_core", 0
-      end
-  end
-  }     
+    
+  generate "update_tog_migration"
   puts "* generating tog_core migration... #{"generated".green.bold}";
-  
 end
 
-def generate_acts_as_commentable_migration
-  sleep 1 # Template runner is too fast and generate multiple migrations with the same number
-  file "db/migrate/" + Time.now.strftime("%Y%m%d%H%M%S") + "_acts_as_commentable.rb",
-  %q{class ActsAsCommentable < ActiveRecord::Migration
-    def self.up
-      create_table "comments", :force => true do |t|
-        t.column "title", :string, :limit => 50, :default => "" 
-        t.column "comment", :text, :default => "" 
-        t.column "created_at", :datetime, :null => false
-        t.column "commentable_id", :integer, :default => 0, :null => false
-        t.column "commentable_type", :string, :limit => 15, :default => "", :null => false
-        t.column "user_id", :integer, :default => 0, :null => false
-      end
-      add_index "comments", ["user_id"], :name => "fk_comments_user" 
-    end
 
-    def self.down
-      drop_table :comments
-    end
-  end
-  }   
-  puts "* acts_as_commentable migration... #{"generated".green.bold}";
+def install_acts_as_commentable
+  generate "comment" 
+  puts "* acts_as_commentable installed... #{"generated".green.bold}";
 end
 
 def generate_acts_as_rateable_migration
-  sleep 1 # Template runner is too fast and generate multiple migrations with the same number
-  file "db/migrate/" + Time.now.strftime("%Y%m%d%H%M%S") + "_add_ratings.rb",
-  %q{class AddRatings < ActiveRecord::Migration
-      def self.up
-      create_table :ratings do |t|
-              t.column :rating, :integer    # You can add a default value here if you wish
-              t.column :rateable_id, :integer, :null => false
-              t.column :rateable_type, :string, :null => false
-      end
-      add_index :ratings, [:rateable_id, :rating]    # Not required, but should help more than it hurts
-      end
-
-      def self.down
-      drop_table :ratings
-      end
-  end
-  }
+  generate "acts_as_rateable_migration "
   puts "* acts_as_rateable migration... #{"generated".green.bold}";
+end
+
+def generate_acts_as_shareable_migration
+  generate "share_migration"
+  puts "* acts_as_shareable migration... #{"generated".green.bold}";
 end
 
 def generate_acts_as_abusable_migration
@@ -152,7 +125,7 @@ def generate_acts_as_abusable_migration
 end
 
 def generate_acts_as_taggable_migration
-  generate "acts_as_taggable_migration"
+  generate "acts_as_taggable_on_migration"
   puts "* acts_as_taggable migration... #{"generated".green.bold}";
 end
 
@@ -167,23 +140,15 @@ def install_tog_user_plugin
   if STDIN.gets.strip == ""
     silence!   
 
+    quiet_git_install("restful_authentication", "git://github.com/technoweenie/restful-authentication.git") 
+    File.rename "vendor/plugins/restful-authentication", "vendor/plugins/restful_authentication"
+    
+    rake "auth:gen:site_key"
+    
     quiet_git_install('tog_user', "git://github.com/tog/tog_user.git", TOG_RELEASE)
 
     route "map.routes_from_plugin 'tog_user'"
     puts "* adding routes to host app... #{"added".green.bold}";
-    
-    file "db/migrate/" + Time.now.strftime("%Y%m%d%H%M%S") + "_install_tog_user.rb",
-    %q{class InstallTogUser < ActiveRecord::Migration
-        def self.up
-          migrate_plugin "tog_user", 1
-        end
-
-        def self.down
-          migrate_plugin "tog_user", 0 
-        end
-    end
-    }
-    puts "* generating migration... #{"generated".green.bold}";
   else
     silence!  
   end
@@ -222,7 +187,8 @@ end
 
 def gem_banner
   puts <<-eos
-We try to install the required gems as superuser so you could be asked to enter your password.
+
+We are going to install the required gems. This could be done as super user in a host-wide manner of just for your user. 
 
 eos
 end
@@ -261,16 +227,18 @@ def install_git_plugins(plugins)
 end   
 
 def quiet_git_install(name, url, tag=nil)
-  print "* #{name}... "; 
-  resolution = "installed".green
-    command = "script/plugin install #{url}"
-    command << " -r 'tag #{tag}'" if tag
-    Open3.popen3(command) { |stdin, stdout, stderr| 
-      stdout.each { |line| resolution = "already installed -> skipped".yellow if line =~ /already installed/; STDOUT.flush }
-    }
-  puts resolution.bold  
+  tag = tag && tag != EDGE ? "-r tag #{tag}'": "" 
+  print "* #{name} #{tag if tag}... "; 
+  plugin name, :git => "#{tag} #{url}"
+  # Open3 doesn't work on windows, so no quiet install
+  # resolution = "installed".green
+  #   command = "script/plugin install #{url}"
+  #   command << " -r 'tag #{tag}'" if tag && tag != EDGE 
+  #    Open3.popen3(command) { |stdin, stdout, stderr| 
+  #      stdout.each { |line| resolution = "already installed -> skipped".yellow if line =~ /already installed/; STDOUT.flush }
+  #    }
+  # puts resolution.bold  
 end
-
 
 silence!
 
@@ -286,28 +254,26 @@ end
 installation_step "Installing plugin dependencies..." do
   
   install_svn_plugins({
-    'acts_as_commentable'    => "http://juixe.com/svn/acts_as_commentable",
-    'acts_as_state_machine'  => "http://elitists.textdriven.com/svn/plugins/acts_as_state_machine/trunk",
     'seo_urls'               => "http://svn.redshiftmedia.com/svn/plugins/seo_urls"
   })  
   
+  #also installed restful_authentication by tog_user optional part
   install_git_plugins({
-    'acts_as_taggable_on_steroids' => "git://github.com/jviney/acts_as_taggable_on_steroids.git",
-    'acts_as_rateable' => "git://github.com/andry1/acts_as_rateable.git",
-    'acts_as_abusable' => "git://github.com/linkingpaths/acts_as_abusable.git",
-    'acts_as_scribe'   => "git://github.com/linkingpaths/acts_as_scribe.git",
-    'paperclip' => "git://github.com/thoughtbot/paperclip.git",
-    'viking'    => "git://github.com/technoweenie/viking.git"
+    'acts_as_scribe'    => "git://github.com/linkingpaths/acts_as_scribe.git",
+    'paperclip'         => "git://github.com/thoughtbot/paperclip.git",
+    'viking'            => "git://github.com/technoweenie/viking.git",
+    'acts_as_shareable' => "git://github.com/molpe/acts_as_shareable.git"
   })
   
 end
 
 installation_step "Generating dependencies migrations..." do     
-  generate_acts_as_commentable_migration
+  install_acts_as_commentable
   generate_acts_as_rateable_migration
   generate_acts_as_abusable_migration
   generate_acts_as_taggable_migration
   generate_acts_as_scribe_migration
+  generate_acts_as_shareable_migration
 end    
 
 
@@ -322,6 +288,7 @@ end
 
 installation_step "Updating the host app files..." do
   add_desert_require
+  environment( "config.reload_plugins = true if RAILS_ENV == 'development'" )
   append_file 'Rakefile', "require 'tasks/tog'\n"
   puts "* including tog rake tasks... #{"done".green.bold}";
   
@@ -329,7 +296,7 @@ installation_step "Updating the host app files..." do
   puts "* copy tog plugins resources... #{"done".green.bold}";
   rake "db:migrate"
   puts "* run migrations... #{"done".green.bold}";
-  run 'rm public/index.html'
+  File.delete 'public/index.html'
   puts "* removing index.html... #{"done".green.bold}";
 end
 

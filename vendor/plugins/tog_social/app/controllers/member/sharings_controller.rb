@@ -15,7 +15,7 @@ class Member::SharingsController < Member::BaseController
   end
 
   def new
-    @sharing = GroupSharing.new(:shareable_type => params[:shareable_type], :shareable_id => params[:shareable_id])
+    @sharing = Share.new(:shareable_type => params[:shareable_type], :shareable_id => params[:shareable_id])
     @shareable = @sharing.shareable
     @groups = current_user.groups
     @referer = request.referer
@@ -35,7 +35,7 @@ class Member::SharingsController < Member::BaseController
       flash[:error] = I18n.t("tog_social.sharings.member.not_member", :name => @group.name)
     end
     respond_to do |format|
-       format.html { redirect_to member_share_path(@group, params[:shareable_type], params[:shareable_id]) }
+       format.html { redirect_to :back }
        format.xml  { render :xml => message, :head => :ok }
     end    
     
@@ -43,7 +43,7 @@ class Member::SharingsController < Member::BaseController
 
   def destroy
     @sharing = @group.sharings.find params[:id]
-    if @sharing && (@sharing.shared_by == current_user || @group.moderators.include?(current_user) )
+    if @sharing && (@sharing.user == current_user || @group.moderators.include?(current_user) )
       @sharing.destroy         
       flash[:ok] = I18n.t("tog_social.sharings.member.remove_share_ok", :name => @group.name)
     else

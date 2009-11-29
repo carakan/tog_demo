@@ -12,23 +12,26 @@ module SharingsHelper
       "#{link_text}<br/><small>#{I18n.t('tog_social.sharings.member.already_shared')}</small>"
     else
       link_to link_text,
-          :url => member_share_path(share_with, shareable.class.to_s, shareable.id),
+          member_share_path(share_with, shareable.class.to_s, shareable.id),
+          :method => :post,
           :html => {:title => I18n.t("tog_social.sharings.member.share_with", :name => share_with.name)}
     end
   end    
-  
+    
   def shareable_title(shareable)
-    if (shareable.respond_to?(:name))
-      string = shareable.name
-    elsif (shareable.respond_to?(:title))
-      string = shareable.title
-    else
-      string = shareable.to_s
-    end
-    string
+    title_for_object(shareable)
   end  
   
- 
+  def title_for_object(obj)
+    if (obj.respond_to?(:name))
+      string = obj.name
+    elsif (obj.respond_to?(:title))
+      string = obj.title
+    else
+      string = "#{obj.class.name} / #{obj.id}"
+    end
+    string      
+  end
   
 end
 

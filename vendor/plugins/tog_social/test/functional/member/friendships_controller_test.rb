@@ -4,11 +4,9 @@ class Member::FriendshipsControllerTest < ActionController::TestCase
 
   context "A logged user" do
     setup do
-      @berlusconi = Factory(:user, :login => 'berlusconi')
-      @berlusconi.activate!
+      @berlusconi = create_active_user('berlusconi')
 
-      @chavez = Factory(:user, :login => 'chavez')
-      @chavez.activate!
+      @chavez = create_active_user('chavez')
     end
     
     context "on POST to :add_friend" do
@@ -24,10 +22,10 @@ class Member::FriendshipsControllerTest < ActionController::TestCase
       
       should "send an info message" do
         assert_equal 1, @chavez.inbox.messages.count
-        assert_equal I18n.t("tog_social.friendships.member.mail.add_friend.subject", :user_name => @berlusconi.profile.full_name), @chavez.inbox.messages.first.subject
+        assert_equal I18n.t("tog_social.friendships.member.mail.request_friend.subject", :user_name => @berlusconi.profile.full_name), @chavez.inbox.messages.first.subject
       end
 
-      should_set_the_flash_to I18n.t("tog_social.friendships.member.friend.added", :friend_name => "chavez")
+      should_set_the_flash_to I18n.t("tog_social.friendships.member.friend.request", :friend_name => "chavez")
     end
     
     context "on POST to :confirm_friend" do
